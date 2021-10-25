@@ -5,7 +5,7 @@
     exit 1
 }
 name=$1
-g++ -I ./lib -o $name $name.cpp $(find lib -name '*.cpp')
+g++ -I ./lib -o ${name}.compiled $name.cpp $(find lib -name '*.cpp')
 echo "[BASH] Starting the instance"
-./$name
-rm ./$name
+./${name}.compiled
+rm ./${name}.compiled

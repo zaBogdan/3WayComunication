@@ -1,0 +1,7 @@
+**/.vscode
+client
+server
+hubble
+kepler
+**/*.fifo
+**/*.compiled
