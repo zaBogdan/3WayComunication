@@ -1,18 +1,16 @@
 #pragma once
-#define READ_PIPE 0
-#define WRITE_PIPE 1
 #include "../Communication.h"
 #include <cstdio>
 #include <unistd.h>
 #include <iostream>
 #include <sys/wait.h>
 
-class AnonymousPipe : public Communication
+class NamedPipe : public Communication
 {
     private:
         int internal_pipe[2];
     public: 
-        AnonymousPipe();
+        NamedPipe();
         std::string Receive();
         void Listen();
         void Send(std::string data);

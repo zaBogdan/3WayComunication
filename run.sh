@@ -6,5 +6,6 @@
 }
 name=$1
 g++ -I ./lib -o $name $name.cpp $(find lib -name '*.cpp')
-echo "Starting the instance"
+echo "[BASH] Starting the instance"
 ./$name
+rm ./$name
