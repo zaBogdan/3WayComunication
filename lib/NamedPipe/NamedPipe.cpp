@@ -39,14 +39,14 @@ std::string NamedPipe::Receive()
         int prefixSize;
         prefixSize = read(fileDesc, prefixLength, 4*sizeof(prefixLength[0]));
         if(prefixSize != 4)
-            continue;
+            return "";
 
         std::cout << "[NamedPipes::Receive] Prefix size is: " << prefixSize << '\n';
         int messageLength = std::stoi(prefixLength);
         char message[messageLength];
         bufferLength = read(fileDesc,message,messageLength*sizeof(message[0]));
         if(bufferLength == -1)
-            continue;
+            return "";
 
         message[messageLength] = '\0';
         

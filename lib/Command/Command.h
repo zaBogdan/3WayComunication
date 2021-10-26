@@ -13,6 +13,7 @@ class Command
         bool LoginUser(std::string username);
         std::string getLoggedUsers();
         std::string getProcInfo(int pid);
+        static bool Validate(std::string function, std::string parameter);
         bool logout();
 };
 
