@@ -17,6 +17,8 @@ std::string AnonymousPipe::Receive(){
         prefixLen = read(this->internal_pipe[READ_PIPE], prefixSize, 4 * sizeof(prefixSize[0]));
         prefixSize[prefixLen] = '\0';
         std::cout << "[AnonymousPipe::Receive] prefixLen=" << prefixLen << '\n';
+        if(prefixLen == 0)
+            return "";
         if(prefixLen != 4 || prefixLen == -1)
             continue;
         std::cout << "[AnonymousPipe::Receive] New message cam with length: " << prefixSize << '\n';

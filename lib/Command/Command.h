@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <iostream>
 
@@ -10,10 +11,10 @@ class Command
     public:
         static const std::string ALLOWED_COMMANDS;
 
-        bool LoginUser(std::string username);
-        std::string getLoggedUsers();
-        std::string getProcInfo(int pid);
+        static bool loginUser(std::string username);
+        static std::string getLoggedUsers();
+        static std::string getProcInfo(std::string pid);
         static bool Validate(std::string function, std::string parameter);
-        bool logout();
+        static bool logout();
 };
 

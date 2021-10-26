@@ -3,27 +3,28 @@
 
 const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-info logout quit";
 
-bool Command::LoginUser(std::string username)
+bool Command::loginUser(std::string username)
 {
     std::cout << "Login user logic\n";
+    return true;
 }
 
 std::string Command::getLoggedUsers()
 {
     std::cout << "Get logged users logic\n";
-
+    return std::string("");
 }
 
-std::string Command::getProcInfo(int pid)
+std::string Command::getProcInfo(std::string pid)
 {
     std::cout << "Get proc info logic\n";
-
+    return std::string("");
 }
 
 bool Command::Validate(std::string function, std::string parameter)
 {
     std::cout << "[Command::Validate] Check: " <<  function << ' ' << parameter << '\n';
-    if(function.find("login") != std::string::npos && function.find("get-proc-info") != std::string::npos)
+    if(function.find("login") == std::string::npos && function.find("get-proc-info") == std::string::npos)
         return true;
 
     if(parameter == "")
@@ -35,4 +36,5 @@ bool Command::Validate(std::string function, std::string parameter)
 bool Command::logout()
 {
     std::cout << "Logout logic\n";
+    return true;
 }
