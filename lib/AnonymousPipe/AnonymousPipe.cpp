@@ -14,7 +14,7 @@ std::string AnonymousPipe::Receive(){
     char data[256];
     size_t bufferRead = 0;
     bufferRead = read(this->internal_pipe[READ_PIPE], data, 256);
-    std::cout << bufferRead << '\n';
+    // std::cout << bufferRead << '\n';
     
     return std::string(data);
 }

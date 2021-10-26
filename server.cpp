@@ -6,73 +6,6 @@
 #include "lib/Thread/Thread.h"
 #include "lib/Command/Command.h"
 
-// void readData()
-// {
-//     std::cout << "[Server][P] Reading data from client\n";
-//     std::string data = interCom.Receive();
-//     std::cout << "[SERVER][P] I've received some information: " << data << '\n';
-//     std::cout << "[SERVER][P] Let's proccess it. Sending to kid.\n";
-//     parentKid.Send(data);
-//     std::cout << "[SERVER][P] Msg send to kid. Waiting...\n";
-//     std::string kidData = kidParent.Receive();
-//     std::cout << "[SERVER][P-AfterParser] New message received: " << kidData << '\n';
-//     std::cout << "[SERVER][P-AfterParser] Sending the message to client\n";
-//     interCom.Send(kidData);
-//     std::cout << "[SERVER][P-AfterParser] Waiting for new message now\n";
-// }
-
-// void parseData()
-// {
-//     std::cout << "[SERVER][Kid-Parser] Waiting for a message.\n";
-//     std::string data = parentKid.Receive();
-//     std::cout << "[SERVER][Kid-Parser] A message was received with data: " << data << '\n';
-//     std::cout << "[SERVER][Kid-Parser] Starting to parse it.\n";
-//     sleep(5);
-//     std::cout << "[SERVER][Kid-Parser] Sending response to parent.\n";
-//     kidParent.Send("Message has been proccessed.");
-// }
-    // Thread t;
-    // pid_t parserChild = t.CreateChild();
-    // while(1)
-    // {
-    //     t.ExecuteInsideParent(parserChild,*readData);
-    //     t.ExecuteInsideChild(parserChild,*parseData);
-    // }
-    
-
-    // if(pid == 0){
-    //     //children
-        // std::cout << "[SERVER][K1] Waiting for a message.\n";
-        // std::string data = parentKid.Receive();
-        // std::cout << "[SERVER][K1] A message was received with data: " << data << '\n';
-        // std::cout << "[SERVER][K1] Starting to parse it.\n";
-
-        // std::cout << "[SERVER][K1] Sending response to parent.\n";
-        // kidParent.Send("Message has been proccessed.");
-    // }else{
-    //     NamedPipe interCom(0);
-    //     int status;
-    //     //parent
-    //     while(1)
-    //     {
-
-    //     }
-
-    // }
-    // if(pid > 0)
-    // {
-
-    // }else{
-    //     //child stuff
-    //     std::cout << "[KID] My pid variable is: " << pid << " and getpid() is: " << getpid() << '\n';
-    //     std::cout << "[KID] Waiting for message\n";
-    //     // p.Listen();
-    //     std::string msg = parentKid.Receive();
-    //     std::cout << "[KID] I've received a message: " << msg << '\n';
-    //     std::cout << "[KID] Sending one too.\n";
-    //     kidParent.Send("I am the kido here bro!");
-    //     exit(0);
-    // }
 int main()
 {
     AnonymousPipe parentParser, parserParent;
@@ -86,12 +19,15 @@ int main()
     }
     if(pid == 0)
     {
+        std::cout << "[Parser::KID] Waiting for new msg\n";
         //this is the parser kid
         std::string cmd, functionName, parameter = "";
         do{
             cmd = parentParser.Receive();
+            std::cout << "[Kid::Parser] We've received a new message: " << cmd << '\n';
             remove(cmd.begin(), cmd.end(), ' ');
             int hasArgs = cmd.find(':');
+            std::cout << "[Kid::Parser] Some checks " << '\n';
             if(hasArgs != std::string::npos)
             {
                 functionName = cmd.substr(0, hasArgs);
@@ -99,12 +35,14 @@ int main()
             }else{
                 functionName = cmd;
             }
+            std::cout << "[Kid::Parser] Some checks 2" << '\n';
             if(Command::ALLOWED_COMMANDS.find(functionName) == std::string::npos)
             {
                 parserParent.Send("Command is invalid.");
                 continue;
             }
-            std::cout << "Starting to check if is valid";
+            std::cout << "[Kid::Parser] Some checks 3" << '\n';
+            std::cout << "[Kid::Parser] Starting to check if is valid\n";
             parserParent.Send("Command is valid.");
         }while(cmd != "quit");
         exit(0);

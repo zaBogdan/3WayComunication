@@ -32,16 +32,29 @@ std::string NamedPipe::Receive()
         std::cout << "Failed to read from a named pipe. Exiting";
         exit(20);
     }
-    char buf[256];
+    char prefixLength[5];
     int bufferLength = 0;
 
     do{
-        bufferLength = read(fileDesc,buf,256);
-        buf[bufferLength] = '\0';
-        std::cout << buf << '\n';
-        return buf;
+        int prefixSize;
+        prefixSize = read(fileDesc, prefixLength, 4*sizeof(prefixLength[0]));
+        if(prefixSize != 4)
+            continue;
+
+        std::cout << "[NamedPipes::Receive] Prefix size is: " << prefixSize << '\n';
+        int messageLength = std::stoi(prefixLength);
+        char message[messageLength];
+        bufferLength = read(fileDesc,message,messageLength*sizeof(message[0]));
+        if(bufferLength == -1)
+            continue;
+
+        message[messageLength] = '\0';
+        
+        std::cout << "[NamedPipes::Receive] We got a new message: " << message << '\n';
+        close(fileDesc);
+        return message;
     }while(bufferLength);
-    // return buf;
+    return "";
 }
 
 void NamedPipe::Listen()
@@ -56,7 +69,15 @@ void NamedPipe::Send(std::string data)
         std::cout << "Failed to write to a named pipe. Exiting";
         exit(20);
     }
-    write(fd, data.c_str(), data.length());
+    std::string messageLength = std::to_string(data.length()); 
+    messageLength.insert(0, 4-messageLength.length(),'0');
+    std::string msg = messageLength+data;
+    int result = write(fd, msg.c_str(), msg.length()*sizeof(msg[0]));
+    if(result == -1)
+    {
+        std::cout << "Failed to write to fifo! Msg: " << msg << '\n'; 
+    }
+    close(fd);
 }
 
 NamedPipe::~NamedPipe()
