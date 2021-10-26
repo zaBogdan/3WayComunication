@@ -2,20 +2,20 @@
 #include <string>
 #include "lib/NamedPipe/NamedPipe.h"
 
-
 int main()
 {
     NamedPipe interCom(1);
+    char cmd[256];
 
-    std::string cmd;
-    std::cout << "Your command: ";
     do{
-        std::cout << "Your command: ";
-        std::cin >> cmd;
+        std::cout << "\n=======\n[>] Input: ";
+        std::cin.getline(cmd,256);
 
         interCom.Send(cmd);
-        // std::cout << interCom.Receive();
-    }while(true);
+        if(cmd == "quit")
+            break;
+        std::cout << interCom.Receive();
+    }while(1);
     
     return 0;
 }

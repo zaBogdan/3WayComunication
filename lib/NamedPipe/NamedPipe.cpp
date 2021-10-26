@@ -41,6 +41,7 @@ std::string NamedPipe::Receive()
         std::cout << buf << '\n';
         return buf;
     }while(bufferLength);
+    // return buf;
 }
 
 void NamedPipe::Listen()
@@ -60,4 +61,6 @@ void NamedPipe::Send(std::string data)
 
 NamedPipe::~NamedPipe()
 {
+    unlink((CLIENT+".fifo").c_str());
+    unlink((SERVER+".fifo").c_str());
 }
