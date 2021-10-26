@@ -57,11 +57,6 @@ std::string NamedPipe::Receive()
     return "";
 }
 
-void NamedPipe::Listen()
-{
-
-}
-
 void NamedPipe::Send(std::string data)
 {
     int fd;

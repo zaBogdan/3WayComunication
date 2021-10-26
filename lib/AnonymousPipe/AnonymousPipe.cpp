@@ -37,10 +37,6 @@ std::string AnonymousPipe::Receive(){
     
 }
 
-void AnonymousPipe::Listen(){
-
-}
-
 void AnonymousPipe::Send(std::string data){
     close(this->internal_pipe[READ_PIPE]);
     std::string msgLen = std::to_string(data.length());

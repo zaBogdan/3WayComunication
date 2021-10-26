@@ -20,6 +20,5 @@ class NamedPipe : public Communication
         NamedPipe(int mode);
         ~NamedPipe();
         std::string Receive();
-        void Listen();
         void Send(std::string data);
 };

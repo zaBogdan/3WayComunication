@@ -5,7 +5,7 @@ const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-i
 
 bool Command::loginUser(std::string username)
 {
-    std::cout << "Login user logic\n";
+    std::cout << "[Command::loginUser] Login user logic. Current username: '" << username << "'\n";
     return true;
 }
 

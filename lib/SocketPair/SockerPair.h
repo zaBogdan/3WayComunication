@@ -25,6 +25,5 @@ class SockerPair : public Communication
         ~SockerPair();
         void SelectMode(bool isParent = true);
         std::string Receive();
-        void Listen();
         void Send(std::string data);
 };

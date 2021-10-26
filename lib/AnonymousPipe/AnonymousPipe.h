@@ -14,6 +14,5 @@ class AnonymousPipe : public Communication
     public: 
         AnonymousPipe();
         std::string Receive();
-        void Listen();
         void Send(std::string data);
 };

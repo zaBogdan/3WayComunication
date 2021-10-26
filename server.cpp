@@ -5,10 +5,8 @@
 #define CHILD_MODE false
 #include "lib/AnonymousPipe/AnonymousPipe.h"
 #include "lib/NamedPipe/NamedPipe.h"
-#include "lib/Thread/Thread.h"
 #include "lib/Command/Command.h"
 #include "lib/SocketPair/SockerPair.h"
-#include "lib/Command/Command.h"
 
 
 int main()

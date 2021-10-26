@@ -24,11 +24,6 @@ std::string SockerPair::Receive()
     return std::string(buf);
 }
 
-void SockerPair::Listen()
-{
-
-}
-
 void SockerPair::Send(std::string data)
 {
     std::cout << "[SockerPair::Receive] Reading the data...\n";
