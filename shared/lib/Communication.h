@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#define DEBUG false
 
 class Communication 
 {

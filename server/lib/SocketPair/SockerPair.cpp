@@ -17,16 +17,20 @@ void SockerPair::SelectMode(bool isParent)
 std::string SockerPair::Receive()
 {
     char buf[256];
-    std::cout << "[SockerPair::Receive] Waiting for data to read" << '\n';
+    if(DEBUG == true)
+        std::cout << "[SockerPair::Receive] Waiting for data to read" << '\n';
     int data = read(this->sockets[this->mode], buf, sizeof(buf));
     buf[data] = '\0';
-    std::cout << "[SockerPair::Receive] We got some data: " << data << ' ' << buf << '\n';
+    if(DEBUG == true)
+        std::cout << "[SockerPair::Receive] We got some data: " << data << ' ' << buf << '\n';
+    
     return std::string(buf);
 }
 
 void SockerPair::Send(std::string data)
 {
-    std::cout << "[SockerPair::Receive] Reading the data...\n";
+    if(DEBUG == true)
+        std::cout << "[SockerPair::Receive] Reading the data...\n";
     write(this->sockets[this->mode], data.c_str(), data.length()*sizeof(data[0]));
 }
 

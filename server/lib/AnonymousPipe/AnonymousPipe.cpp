@@ -16,12 +16,18 @@ std::string AnonymousPipe::Receive(){
         
         prefixLen = read(this->internal_pipe[READ_PIPE], prefixSize, 4 * sizeof(prefixSize[0]));
         prefixSize[prefixLen] = '\0';
-        std::cout << "[AnonymousPipe::Receive] prefixLen=" << prefixLen << '\n';
+
+        if(DEBUG == true)
+            std::cout << "[AnonymousPipe::Receive] prefixLen=" << prefixLen << '\n';
+        
         if(prefixLen == 0)
             return "";
         if(prefixLen != 4 || prefixLen == -1)
             continue;
-        std::cout << "[AnonymousPipe::Receive] New message cam with length: " << prefixSize << '\n';
+        
+        if(DEBUG == true)
+            std::cout << "[AnonymousPipe::Receive] New message cam with length: " << prefixSize << '\n';
+        
         int messageSize = std::stoi(prefixSize);
 
 
@@ -31,7 +37,10 @@ std::string AnonymousPipe::Receive(){
         data[messageSize]='\0';
         if(bufferRead == -1)
             return "";
-        std::cout << "[AnonymousPipe::Receive] Pipe data was: " << data << '\n';
+
+        if(DEBUG == true)
+            std::cout << "[AnonymousPipe::Receive] Pipe data was: " << data << '\n';
+
         return std::string(data);
     }while(true);
     
@@ -42,7 +51,9 @@ void AnonymousPipe::Send(std::string data){
     std::string msgLen = std::to_string(data.length());
     msgLen.insert(0, 4-msgLen.length(),'0');
     std::string msg = msgLen+data+'\0';
-    std::cout <<"[AnonymousPipe::Send] Msg: " <<msg << '\n';
+    
+    if(DEBUG == true)
+        std::cout <<"[AnonymousPipe::Send] Msg: " <<msg << '\n';
 
     int result = write(this->internal_pipe[WRITE_PIPE], msg.c_str(), msg.length()*sizeof(msg[0]));
     if(result == -1)

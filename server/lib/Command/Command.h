@@ -11,10 +11,10 @@ class Command
     public:
         static const std::string ALLOWED_COMMANDS;
 
-        static bool loginUser(std::string username);
+        static std::string loginUser(std::string username);
         static std::string getLoggedUsers();
         static std::string getProcInfo(std::string pid);
         static bool Validate(std::string function, std::string parameter);
-        static bool logout();
+        static std::string logout();
 };
 

@@ -40,8 +40,10 @@ std::string NamedPipe::Receive()
         prefixSize = read(fileDesc, prefixLength, 4*sizeof(prefixLength[0]));
         if(prefixSize != 4)
             return "";
-
-        std::cout << "[NamedPipes::Receive] Prefix size is: " << prefixSize << '\n';
+        
+        if(DEBUG == true)
+            std::cout << "[NamedPipes::Receive] Prefix size is: " << prefixSize << '\n';
+        
         int messageLength = std::stoi(prefixLength);
         char message[messageLength];
         bufferLength = read(fileDesc,message,messageLength*sizeof(message[0]));
@@ -50,7 +52,9 @@ std::string NamedPipe::Receive()
 
         message[messageLength] = '\0';
         
-        std::cout << "[NamedPipes::Receive] We got a new message: " << message << '\n';
+        if(DEBUG == true)
+            std::cout << "[NamedPipes::Receive] We got a new message: " << message << '\n';
+        
         close(fileDesc);
         return message;
     }while(bufferLength);

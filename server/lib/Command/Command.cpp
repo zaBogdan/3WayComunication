@@ -6,27 +6,27 @@ const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-i
 
 bool Command::checkIsUserLogged()
 {
-    
+    return true;
 }
 
-bool Command::loginUser(std::string username)
+std::string Command::loginUser(std::string username)
 {
     std::cout << "[Command::loginUser] Login user logic. Current username: '" << username << "'\n";
     
-
-    return true;
+    std::string msg = "Successfully logged in " + username;
+    return std::string(msg);
 }
 
 std::string Command::getLoggedUsers()
 {
     std::cout << "Get logged users logic\n";
-    return std::string("");
+    return std::string("System logged users are: ");
 }
 
 std::string Command::getProcInfo(std::string pid)
 {
     std::cout << "Get proc info logic\n";
-    return std::string("");
+    return std::string("Process info is:");
 }
 
 bool Command::Validate(std::string function, std::string parameter)
@@ -41,8 +41,8 @@ bool Command::Validate(std::string function, std::string parameter)
     return true;
 }
 
-bool Command::logout()
+std::string Command::logout()
 {
     std::cout << "Logout logic\n";
-    return true;
+    return std::string("Successfully logged out!");
 }

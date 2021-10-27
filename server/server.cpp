@@ -38,19 +38,19 @@ int main()
                 std::string parameter = data.substr(splitterPos+1, data.length()-function.length());
                 std::cout << "[Command::KID] function, param is: " << function << ' ' << parameter << '\n';
                 
-                
+                std::string response = "";
                 if(function == "login")
                 {
-                    Command::loginUser(parameter);
+                    response = Command::loginUser(parameter);
                 }else if(function == "logout"){
-                    Command::logout();
+                    response = Command::logout();
                 }else if(function == "get-logged-users"){
-                    Command::getLoggedUsers();
+                    response = Command::getLoggedUsers();
                 }else if(function == "get-proc-info"){
-                    Command::getProcInfo(parameter);
+                    response = Command::getProcInfo(parameter);
                 }
 
-                commandData.Send("zabogdan is \nalways awesome\n");
+                commandData.Send("Command response: \n[<] "+response+"\n");
             }while(true);
             exit(0);
         }else{
