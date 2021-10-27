@@ -6,15 +6,21 @@ int main()
 {
     NamedPipe interCom(1);
     char cmd[256];
+    interCom.Send("logout");
+    interCom.Receive();
 
     do{
         std::cout << "\n=======\n[>] Input: ";
         std::cin.getline(cmd,256);
 
         interCom.Send(cmd);
-        if(cmd == "quit")
+        std::string response = interCom.Receive();
+        std::cout << response;
+        if(response.find("shutdown") != std::string::npos)
+        {
+            std::cout << "[!] Server is shutting down... Exiting now...\n";
             break;
-        std::cout << interCom.Receive();
+        }
     }while(1);
     
     return 0;

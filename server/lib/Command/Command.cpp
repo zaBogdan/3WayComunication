@@ -117,6 +117,22 @@ std::string Command::getProcInfo(std::string pid)
 bool Command::Validate(std::string function, std::string parameter)
 {
     std::cout << "[Command::Validate] Check: " <<  function << ' ' << parameter << '\n';
+    int start, end=0;
+    bool found = false;
+    while((start = Command::ALLOWED_COMMANDS.find_first_not_of(' ', end))!=std::string::npos)
+    {
+        end = Command::ALLOWED_COMMANDS.find(' ',start);
+        //if we find the user we update the string and that's it
+        std::cout << Command::ALLOWED_COMMANDS.substr(start,end-start) << '\n';
+        if(function == Command::ALLOWED_COMMANDS.substr(start,end-start))
+        {
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        return false;
+
     if(function.find("login") == std::string::npos && function.find("get-proc-info") == std::string::npos)
         return true;
 

@@ -87,13 +87,7 @@ int main()
                     parameter = "";
                 }
 
-                //check if command actually exists
-                if(Command::ALLOWED_COMMANDS.find(functionName) == std::string::npos)
-                {
-                    parserParent.Send("Command is invalid. (Function doesn't exists)");
-                    continue;
-                }
-                //check if it is a two parameter command
+                //check if it is a valid function and if needed a two parameter command
                 if(Command::Validate(functionName, parameter) != true)
                 {
                     parserParent.Send("Command is invalid. (parameter checks)");
