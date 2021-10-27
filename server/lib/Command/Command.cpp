@@ -55,15 +55,16 @@ std::string Command::getLoggedUsers()
     struct utmp *n;
     setutent();
     n=getutent();
+    std::string users = "User\tLogon Time\t\tHostname\n";
     while(n) {
         if(n->ut_type==USER_PROCESS) {
-            // std::cout << n->ut_user << ' '<<  n->ut_line << ' ' <<  n->ut_host << '\n';
-            printf("%9s%12s (%s)\n", n->ut_user, n->ut_line, n->ut_host);
-
+            users +=    std::string(n->ut_user) + "\t"+ 
+                        InternalAPI::unixTimeToDate(n->ut_tv.tv_sec) + "\t" + 
+                        std::string(n->ut_host) + '\n';
         }
         n=getutent();
     }
-    return std::string("System logged users are: ");
+    return std::string("System logged users are: \n"+users);
 }
 
 std::string Command::getProcInfo(std::string pid)

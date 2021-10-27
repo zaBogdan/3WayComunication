@@ -13,4 +13,6 @@ class InternalAPI
 {
     public:
         static std::string ReadFile(const char* filePath);
+        static std::string unixTimeToDate(long int seconds);
+
 };
