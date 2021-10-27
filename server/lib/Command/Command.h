@@ -7,7 +7,7 @@ class Command
     private:
         static std::string loggedInString;
         static std::string isUserLogged;
-    
+        static bool checkIsUserLogged();
     public:
         static const std::string ALLOWED_COMMANDS;
 

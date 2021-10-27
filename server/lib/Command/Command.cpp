@@ -1,11 +1,19 @@
 #include "Command.h"
 
 
-const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-info logout quit";
+const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-info logout quit exit";
+
+
+bool Command::checkIsUserLogged()
+{
+    
+}
 
 bool Command::loginUser(std::string username)
 {
     std::cout << "[Command::loginUser] Login user logic. Current username: '" << username << "'\n";
+    
+
     return true;
 }
 

@@ -4,7 +4,7 @@
 #define PARENT_MODE true
 #define CHILD_MODE false
 #include "lib/AnonymousPipe/AnonymousPipe.h"
-#include "lib/NamedPipe/NamedPipe.h"
+#include "../shared/lib/NamedPipe/NamedPipe.h"
 #include "lib/Command/Command.h"
 #include "lib/SocketPair/SockerPair.h"
 

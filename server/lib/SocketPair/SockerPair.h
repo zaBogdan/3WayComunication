@@ -1,9 +1,8 @@
 #pragma once
-#include "../Communication.h"
+#include "../../../shared/lib/Communication.h"
 #include <cstdio>
 #include <unistd.h>
 #include <iostream>
-#include "Communication.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>

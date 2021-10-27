@@ -9,7 +9,12 @@
 # rm *.fifo
 
 name=$1
-g++ -I ./lib -o ${name}.compiled $name.cpp $(find lib -name '*.cpp')
+if [[ $name -eq "server" ]]
+then 
+    g++ -o ${name}.compiled ${name}/${name}.cpp $(find server/lib -name '*.cpp') $(find shared/lib -name '*.cpp')
+else
+    g++ -o ${name}.compiled ${name}/${name}.cpp $(find shared/lib -name '*.cpp')
+fi
 echo "[BASH] Starting the instance"
 ./${name}.compiled
 rm ./${name}.compiled

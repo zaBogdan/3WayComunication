@@ -1,7 +1,7 @@
 #pragma once
 #define READ_PIPE 0
 #define WRITE_PIPE 1
-#include "../Communication.h"
+#include "../../../shared/lib/Communication.h"
 #include <cstdio>
 #include <unistd.h>
 #include <iostream>

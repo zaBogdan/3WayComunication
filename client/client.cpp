@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "lib/NamedPipe/NamedPipe.h"
+#include "../shared/lib/NamedPipe/NamedPipe.h"
 
 int main()
 {
