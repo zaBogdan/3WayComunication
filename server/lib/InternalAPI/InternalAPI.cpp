@@ -116,15 +116,15 @@ std::string InternalAPI::unixTimeToDate(long int seconds)
  
     ans += std::to_string(date);
     ans += "/";
-    ans += std::to_string(month);
+    ans += std::to_string(month).insert(0,1-(month/10 == 0 ? 0 : 1),'0');
     ans += "/";
     ans += std::to_string(currYear);
     ans += " ";
-    ans += std::to_string(hours);
+    ans += std::to_string(hours).insert(0,1-(hours/10 == 0 ? 0 : 1),'0');
     ans += ":";
-    ans += std::to_string(minutes);
+    ans += std::to_string(minutes).insert(0,1-(minutes/10 == 0 ? 0 : 1),'0');
     ans += ":";
-    ans += std::to_string(secondss);
+    ans += std::to_string(secondss).insert(0,1-(secondss/10 == 0 ? 0 : 1),'0');
  
     // Return the time
     return ans;
