@@ -1,11 +1,17 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <utmp.h>
+#include <algorithm>
+#include <cctype>
+#include <vector>
+#include <unordered_map>
 #include "../InternalAPI/InternalAPI.h"
 
 class Command 
 {
     private:
+        // i can save this string on client.
         // static std::string loggedInString;
         static std::string isUserLogged;
         static bool checkIsUserLogged();

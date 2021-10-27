@@ -1,13 +1,13 @@
 #include "Command.h"
 
 
-const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-info logout quit exit";
+const std::string Command::ALLOWED_COMMANDS = "login get-logged-users get-proc-info logout quit";
 std::string Command::isUserLogged = "";
 
 
 bool Command::checkIsUserLogged()
 {
-    return true;
+    return Command::isUserLogged != "";
 }
 
 std::string Command::loginUser(std::string username)
@@ -29,6 +29,7 @@ std::string Command::loginUser(std::string username)
     while((userPositionStart = users.find_first_not_of('\n', userPositionEnd))!=std::string::npos)
     {
         userPositionEnd = users.find('\n',userPositionStart);
+        //if we find the user we update the string and that's it
         if(username == users.substr(userPositionStart,userPositionEnd-userPositionStart))
         {
             Command::isUserLogged = username;
@@ -36,7 +37,9 @@ std::string Command::loginUser(std::string username)
         }
     }
     
+    //fail login message.
     std::string msg = "Login failed. The username doesn't exist in our database.";
+    //if we logged in a user we update the message.
     if(Command::isUserLogged != "")
         msg = "Successfully logged in as '" + username + "'. Now you can access other commands!";
     return std::string(msg);
@@ -44,14 +47,70 @@ std::string Command::loginUser(std::string username)
 
 std::string Command::getLoggedUsers()
 {
-    std::cout << "Get logged users logic\n";
+    if(Command::checkIsUserLogged()!=true)
+        return std::string("You must be logged in to use this command.");
+
+    std::cout << "[Command::getLoggedUsers] Get logged users logic\n";
+
+    struct utmp *n;
+    setutent();
+    n=getutent();
+    while(n) {
+        if(n->ut_type==USER_PROCESS) {
+            // std::cout << n->ut_user << ' '<<  n->ut_line << ' ' <<  n->ut_host << '\n';
+            printf("%9s%12s (%s)\n", n->ut_user, n->ut_line, n->ut_host);
+
+        }
+        n=getutent();
+    }
     return std::string("System logged users are: ");
 }
 
 std::string Command::getProcInfo(std::string pid)
 {
-    std::cout << "Get proc info logic\n";
-    return std::string("Process info is:");
+    std::string msg = "Proccess with pid '"+pid+"' doesn't exists!";
+    //user must be logged in to use this command.
+    if(Command::checkIsUserLogged()!=true)
+        return std::string("You must be logged in to use this command.");
+    
+    //reading the proccess file info.
+    std::cout << "[Command::getProcInfo] Get proc info logic\n";
+    std::string processFile = "/proc/"+pid+"/status";
+    std::string output = InternalAPI::ReadFile(processFile.c_str());
+    //here empty output means 100% that process doesn't exists.
+    if(output == "")
+        return std::string(msg);
+
+    //parse the output
+    std::unordered_map<std::string, std::string> procFileInfo;
+
+    int start, end = 0;
+    while((start = output.find_first_not_of('\n', end))!=std::string::npos)
+    {
+        end = output.find('\n',start);
+        //get the line
+        std::string line = output.substr(start,end-start);
+        //remove empty spaces from line and \t
+        std::string::iterator end_pos = std::remove(line.begin(), line.end(), '\t');
+        line.erase(end_pos, line.end());
+        // std::string::iterator end_pos2 = std::remove(line.begin(), line.end(), ' ');
+        // line.erase(end_pos2, line.end());
+        //parse each and every line
+        int separatorPosition = line.find(":");
+        if(separatorPosition != std::string::npos)
+        {
+            std::string key = line.substr(0, separatorPosition);
+            std::string value = line.substr(separatorPosition+1, line.length()-separatorPosition);
+            procFileInfo[key] = value;
+        }
+    }
+    std::string response =  "Name:\t"+procFileInfo["Name"]+"\n"+
+                            "State:\t"+procFileInfo["State"]+"\n"+
+                            "PPid:\t"+procFileInfo["PPid"]+"\n"+
+                            "Uid:\t"+procFileInfo["Uid"]+"\n"+
+                            "VmSize:\t"+procFileInfo["VmSize"];
+
+    return std::string("Process info is:\n" + response);
 }
 
 bool Command::Validate(std::string function, std::string parameter)
@@ -69,9 +128,11 @@ bool Command::Validate(std::string function, std::string parameter)
 std::string Command::logout()
 {
     std::cout << "[Command::Logout] Logout user logic.\n";
+    //here it will 'fail' if there is no user logged in yet.
     if(Command::isUserLogged == "")
         return std::string("Failed to logout. There is no user logged in.");
 
+    //'logout' logic done.
     Command::isUserLogged = "";
     return std::string("Successfully logged out!");
 }

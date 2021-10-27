@@ -8,7 +8,6 @@
 #include "lib/Command/Command.h"
 #include "lib/SocketPair/SockerPair.h"
 
-
 int main()
 {
     AnonymousPipe parentParser, parserParent;
@@ -27,6 +26,7 @@ int main()
         pid_t kidPid = fork();
         if(kidPid == 0)
         {
+            bool stillInAction = true;
             std::cout << "[Command::KID] Hello from cmd kid\n";
             //here i will do the cmds
             commandData.SelectMode(CHILD_MODE);
@@ -48,12 +48,18 @@ int main()
                     response = Command::getLoggedUsers();
                 }else if(function == "get-proc-info"){
                     response = Command::getProcInfo(parameter);
+                }else if(function == "quit")
+                {
+                    std::cout << "[Command::KID] Warm shutdown initiated. Returning response\n";
+                    response = "Server shutdown initiated.\n";
+                    stillInAction = false;
                 }
 
                 commandData.Send("Command response: \n[<] "+response+"\n");
-            }while(true);
+            }while(stillInAction);
             exit(0);
         }else{
+            bool stillInAction = true;
             std::cout << "[Parser::KID] Waiting for new msg\n";
             //this is the parser kid
             std::string cmd, functionName, parameter = "";
@@ -93,14 +99,19 @@ int main()
                     parserParent.Send("Command is invalid. (parameter checks)");
                     continue;
                 }
-
+                
                 std::cout << "[Kid::Parser] Starting to execute the command.\n";
                 commandData.SelectMode(PARENT_MODE);
                 commandData.Send(functionName+"|"+parameter);
                 std::string commandOutput = commandData.Receive();
+                if(commandOutput.find("shutdown")!=std::string::npos)
+                {
+                    std::cout << "[Kid::Parser] Warm shutdown initiated. Last command has been proccessed.\n";
+                    stillInAction = false;
+                }
                 //return the message to the sender.
                 parserParent.Send("Command is valid.\n"+commandOutput);
-            }while(cmd != "quit");
+            }while(stillInAction);
             exit(0);
         }
     }else{
@@ -116,7 +127,15 @@ int main()
             parentParser.Send(command);
             response = parserParent.Receive();
             interCom.Send(response);
-        }while(command != "quit");
+            if(response.find("shutdown")!=std::string::npos)
+            {
+                std::cout << "[Parent] Received shutdown signal...\n";
+                break;
+            }
+        }while(true);
+        std::cout << "[Parent] Shutting down...\n";
+        std::cout << "[Parent] Bye!\n";
+        exit(0);
     }
     return 0;
 }
