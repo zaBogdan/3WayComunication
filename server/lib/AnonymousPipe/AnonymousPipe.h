@@ -2,10 +2,6 @@
 #define READ_PIPE 0
 #define WRITE_PIPE 1
 #include "../../../shared/lib/Communication.h"
-#include <cstdio>
-#include <unistd.h>
-#include <iostream>
-#include <sys/wait.h>
 
 class AnonymousPipe : public Communication
 {

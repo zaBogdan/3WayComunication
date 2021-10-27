@@ -1,9 +1,8 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <string>
 #include <utmp.h>
 #include <algorithm>
-#include <cctype>
 #include <vector>
 #include <unordered_map>
 #include "../InternalAPI/InternalAPI.h"

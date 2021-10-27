@@ -6,16 +6,22 @@ std::string InternalAPI::ReadFile(const char* filePath)
     std::cout << "[InternalAPI::ReadFile] Reading the file: " << filePath << "\n";
     
     int fd = open(filePath, O_RDONLY);
+    struct stat st;
+    stat(filePath, &st);
+
     std::cout << "[InternalAPI::ReadFile] FD status: " << fd << "\n";
     if(fd == -1)
     {
         std::cout << "[InternalAPI::ReadFile] Failed to read file " << filePath << "\n";
         return std::string("");
     }
-    char buf[2*1024];
-    int len = read(fd, buf, sizeof(buf));
+    std::cout << "Stat: " << st.st_size << '\n';
+    //trying to read the content of the file.
+    char buf[(st.st_size != 0 ? st.st_size+1 : 4*1024)];
+    int len = read(fd, buf, sizeof(buf)/sizeof(buf[0]));
     buf[len] = '\0';
     std::cout << "[InternalAPI::ReadFile] Length: " << len << '\n';
+    std::cout << buf << '\n';
 
     return std::string(buf);
 }

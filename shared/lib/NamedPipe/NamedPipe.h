@@ -1,12 +1,5 @@
 #pragma once
 #include "../Communication.h"
-#include <cstdio>
-#include <unistd.h>
-#include <iostream>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 const std::string SERVER = "hubble";
 const std::string CLIENT = "kepler";
 

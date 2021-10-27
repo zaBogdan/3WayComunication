@@ -1,5 +1,3 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #define PARENT_MODE true
 #define CHILD_MODE false

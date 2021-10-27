@@ -1,5 +1,3 @@
-#include <iostream>
-#include <string>
 #include "../shared/lib/NamedPipe/NamedPipe.h"
 
 int main()

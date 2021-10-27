@@ -1,16 +1,6 @@
 #pragma once
 #include "../../../shared/lib/Communication.h"
-#include <cstdio>
-#include <unistd.h>
-#include <iostream>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-
 
 class SockerPair : public Communication
 {

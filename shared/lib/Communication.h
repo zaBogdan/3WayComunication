@@ -1,5 +1,9 @@
 #pragma once
+#include <iostream>
 #include <string>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #define DEBUG false
 
 class Communication 
