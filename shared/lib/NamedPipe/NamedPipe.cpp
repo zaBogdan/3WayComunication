@@ -11,8 +11,17 @@ NamedPipe::NamedPipe(int mode)
         this->receiveFile = CLIENT + ".fifo";
     }
     std::cout << "[NamedPipe] Running in " << (mode == 0 ? "SERVER" : "CLIENT") << " mode\n";
-    this->makeFifo(SERVER);
-    this->makeFifo(CLIENT);
+    if(mode == 1)
+    {
+        if(access((CLIENT+".fifo").c_str(), F_OK)==-1)
+        {
+            std::cout << "[!] It seems that server isn't on... Try again later.\n";
+            exit(1);
+        }
+    }else{
+        this->makeFifo(SERVER);
+        this->makeFifo(CLIENT);
+    }
 }
 
 void NamedPipe::makeFifo(std::string name)
