@@ -17,4 +17,3 @@ else
 fi
 echo "[BASH] Starting the instance"
 ./${name}.compiled
-rm ./${name}.compiled
