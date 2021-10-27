@@ -19,19 +19,38 @@ std::string SockerPair::Receive()
     char buf[256];
     if(DEBUG == true)
         std::cout << "[SockerPair::Receive] Waiting for data to read" << '\n';
-    int data = read(this->sockets[this->mode], buf, sizeof(buf));
-    buf[data] = '\0';
-    if(DEBUG == true)
-        std::cout << "[SockerPair::Receive] We got some data: " << data << ' ' << buf << '\n';
-    
-    return std::string(buf);
+
+    char msgLen[5];
+    do{
+        int prefixData = read(this->sockets[this->mode],msgLen, 4*sizeof(msgLen[0]));
+        msgLen[prefixData+1] = '\0';
+        if(prefixData == 0)
+                return "";
+        if(prefixData != 4 || prefixData == -1)
+            continue;
+
+        int messageSize = std::stoi(msgLen);
+
+        int data = read(this->sockets[this->mode], buf, messageSize*sizeof(buf[0]));
+        buf[data] = '\0';
+        if(DEBUG == true)
+            std::cout << "[SockerPair::Receive] We got a message with size: " << messageSize << " with data: '" << buf << "'\n";
+        
+        return std::string(buf);
+    }while(true);
+
 }
 
 void SockerPair::Send(std::string data)
 {
+    std::string msgLen = std::to_string(data.length());
+    msgLen.insert(0, 4-msgLen.length(),'0');
+    std::string msg = msgLen+data;
     if(DEBUG == true)
-        std::cout << "[SockerPair::Receive] Reading the data...\n";
-    write(this->sockets[this->mode], data.c_str(), data.length()*sizeof(data[0]));
+        std::cout << "[SockerPair::Send] Sending the data...'" << msg << "'\n";
+
+    write(this->sockets[this->mode], msg.c_str(), msg.length()*sizeof(msg[0]));
+
 }
 
 SockerPair::~SockerPair()

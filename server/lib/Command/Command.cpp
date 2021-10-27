@@ -123,7 +123,6 @@ bool Command::Validate(std::string function, std::string parameter)
     {
         end = Command::ALLOWED_COMMANDS.find(' ',start);
         //if we find the user we update the string and that's it
-        std::cout << Command::ALLOWED_COMMANDS.substr(start,end-start) << '\n';
         if(function == Command::ALLOWED_COMMANDS.substr(start,end-start))
         {
             found = true;
