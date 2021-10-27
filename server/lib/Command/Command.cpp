@@ -20,7 +20,7 @@ std::string Command::loginUser(std::string username)
         return std::string("Username can at least 3 characters and maximum 25.");
 
     //getting the file
-    std::string users = InternalAPI::ReadFile("server/users.conf");
+    std::string users = InternalAPI::ReadFile(CONFIG_FILE_LOCATION);
     if(users == "")
         return std::string("Curently we don't have any registered users.");
     
